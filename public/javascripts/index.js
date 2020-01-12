@@ -12,6 +12,9 @@ submitForm = (event, form) => {
 	if (number <= 0 || number > 100) {
 		return alert("Le nombre doit être compris entre 0 et 100")
 	}
+	if (!Number.isInteger(number)) {
+		return alert("Le nombre doit être un entier")
+	}
 
 	fetch('/romain', {
 		method: 'POST',

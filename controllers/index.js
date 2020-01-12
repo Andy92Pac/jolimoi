@@ -12,6 +12,9 @@ exports.romain = (req, res, next) => {
 	if (number <= 0 || number > 100) {
 		return res.status(401).json({ message: "Le nombre doit être compris entre 0 et 100"})
 	}
+	if (!Number.isInteger(number)) {
+		return res.status(401).json({ message: "Le nombre doit être un entier"})
+	}
 
 	let convertedNumber = service.convertToRomanianNumber(number)
 
