@@ -4,7 +4,7 @@ exports.romain = (req, res, next) => {
 	let number = req.body.number
 
 	if (number === undefined) {
-		return res.status(400).json({ message: "Aucun argument"})
+		return res.status(400).json({ message: "Nombre manquant"})
 	}
 	if (isNaN(number)) {
 		return res.status(401).json({ message: "L'argument n'est pas un nombre"})
