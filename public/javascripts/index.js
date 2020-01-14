@@ -20,7 +20,13 @@ submitForm = (event, form) => {
 			number
 		})
 	})
-	.then(res => res.json())
+	.then(async res => {
+		if (res.status === 400 || res.status === 401) {
+			res = await res.json()
+			throw res.message
+		}
+		res.json()
+	})
 	.then(data => {
 		document.getElementById("conversionResult").innerHTML = `Le nombre ${form.number.value} s'écrit ${data.convertedNumber} en chiffre romains`;
 	})
