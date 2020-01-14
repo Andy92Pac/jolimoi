@@ -1,6 +1,6 @@
 const service = require('./../services')
 
-exports.romain = (req, res, next) => {
+exports.romanian = (req, res, next) => {
 	let number = req.body.number
 
 	if (number === undefined) {

@@ -7,6 +7,6 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Jolimoi' });
 });
 
-router.post('/romain', controller.romain);
+router.post('/romanian', controller.romanian);
 
 module.exports = router;
