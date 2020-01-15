@@ -25,7 +25,7 @@ submitForm = (event, form) => {
 			res = await res.json()
 			throw res.message
 		}
-		res.json()
+		return res.json()
 	})
 	.then(data => {
 		document.getElementById("conversionResult").innerHTML = `Le nombre ${form.number.value} s'écrit ${data.convertedNumber} en chiffre romains`;

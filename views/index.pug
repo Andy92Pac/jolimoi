@@ -2,7 +2,7 @@ extends layout
 
 block content
   h1= title
-  form(method='POST' action='/romanian' onsubmit="submitForm(event, this)")
+  form.form-romanian(method='POST' action='/romanian' onsubmit="submitForm(event, this)")
     label(for='number') Entrez un nombre entre 0 et 100 :
     input#number(type='number' name='number' min=0 max=100 step=1)
     button(type='submit') Convertir en nombre romain
