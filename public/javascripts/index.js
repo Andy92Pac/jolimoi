@@ -1,3 +1,5 @@
+const submitButton = document.getElementById('submit')
+
 submitForm = (event, form) => {
 	event.preventDefault()
 
@@ -13,24 +15,37 @@ submitForm = (event, form) => {
 		return alert("Le nombre doit être compris entre 0 et 100")
 	}
 
-	fetch('/romanian', {
-		method: 'POST',
-		headers: {'content-type': 'application/json'},
-		body: JSON.stringify({
-			number
-		})
-	})
-	.then(async res => {
-		if (res.status === 400 || res.status === 401) {
-			res = await res.json()
-			throw res.message
-		}
-		return res.json()
-	})
-	.then(data => {
-		document.getElementById("conversionResult").innerHTML = `Le nombre ${form.number.value} s'écrit ${data.convertedNumber} en chiffre romains`;
-	})
-	.catch(err => {
-		alert(err)
-	})
+	if (!!window.EventSource) {
+		const source = new EventSource(`/romanian/${number}`)
+
+		source.addEventListener('message', function(e) {
+			submitButton.disabled = false
+			let result = JSON.parse(e.data)
+			alert(result.message)
+			source.close()
+		}, false)
+
+		source.addEventListener('update', function(e) {
+			let result = JSON.parse(e.data)
+			document.getElementById("conversionResult").innerHTML = `Le résultat sera disponible dans ${result.secondsToGo} secondes`;
+		}, false)
+
+		source.addEventListener('result', function(e) {
+			submitButton.disabled = false
+			let result = JSON.parse(e.data)
+			document.getElementById("conversionResult").innerHTML = `Le nombre ${form.number.value} s'écrit ${result.convertedNumber} en chiffre romains`;
+			source.close()
+		}, false)
+
+		source.addEventListener('open', function(e) {
+			submitButton.disabled = true
+		}, false)
+
+		source.addEventListener('error', function(e) {
+			submitButton.disabled = false
+			alert("Erreur lors de la connexion avec le serveur")
+		}, false)
+	} else {
+		alert("Votre navigateur ne supporte pas les SSE")
+	}
 }
